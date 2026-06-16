@@ -408,6 +408,46 @@ transform:translate(-50px,100px) scale(1);
 }
 
 }  
+
+.achievement{
+position:fixed;
+top:30px;
+right:30px;
+z-index:999999;
+
+background:linear-gradient(
+135deg,
+#22c55e,
+#3b82f6
+);
+
+padding:18px 25px;
+border-radius:16px;
+
+font-weight:700;
+font-size:16px;
+
+box-shadow:
+0 0 25px rgba(34,197,94,.5),
+0 0 50px rgba(59,130,246,.3);
+
+animation:slideAchievement .5s ease;
+
+}
+
+@keyframes slideAchievement{
+
+from{
+opacity:0;
+transform:translateX(100px);
+}
+
+to{
+opacity:1;
+transform:translateX(0);
+}
+
+}
   
 </style>
 </head>
@@ -528,10 +568,14 @@ animation: glowPulse 3s infinite;
   </section>
 
 </main>
-
+<div id="achievement" class="achievement hidden">
+  <div id="achievementText">
+    🏆 Achievement Unlocked
+  </div>
+</div>
 <audio id="correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
 <audio id="wrong" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
-
+  
 </body>
 <script>
 
@@ -6598,6 +6642,25 @@ if(level >= 30) nextRank = "Legend";
 document.getElementById("nextRank").innerText =
 "Next Rank: " + nextRank;
 }
+
+function showAchievement(text){
+
+const box =
+document.getElementById("achievement");
+
+document.getElementById(
+"achievementText"
+).innerText = text;
+
+box.classList.remove("hidden");
+
+setTimeout(()=>{
+
+box.classList.add("hidden");
+
+},3000);
+
+}
   
 function load(){
 clearInterval(timer);
@@ -6646,6 +6709,11 @@ document.getElementById("xp").innerText = xp;
 updateLevel();
 
 correctAnswers++;
+if(correctAnswers === 1){
+showAchievement(
+"🏆 First Correct Answer"
+);
+}                             
 }else{
 document.getElementById("wrong").play();
 buttons[idx].classList.add("wrong");
