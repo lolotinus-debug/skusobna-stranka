@@ -2484,6 +2484,10 @@ gameQuestions = pool.slice(0,20);
 
 load();
 }
+function showAbout(){
+
+document.getElementById("modalTitle").innerHTML = "ABOUT MGOT";
+
 document.getElementById("modalContent").innerHTML = `
 
 <div style="
@@ -2498,142 +2502,40 @@ Better decisions lead to better outcomes — for individuals,
 communities and future generations.
 </div>
 
-<h3 style="color:#22c55e;margin-bottom:10px">
-🎯 Strategic Vision
-</h3>
+<h3 style="color:#22c55e;margin-bottom:10px">🎯 Strategic Vision</h3>
 
 <p>
-MGOT is founded on the belief that long-term societal
-progress begins with individual development.
+MGOT is founded on the belief that long-term societal progress begins with individual development.
 </p>
 
 <p>
-Our objective is to build an ecosystem that promotes
-education, critical thinking, personal responsibility
-and continuous growth.
-</p>
-
-<p>
-In the digital economy of the future, communities built
-on knowledge, discipline and collaboration will hold
-a significant competitive advantage.
-</p>
-
-<p>
-MGOT is not just a token — it is a mechanism for aligning
-individuals around a common vision of personal and
-collective advancement.
+Our objective is to build an ecosystem that promotes education, critical thinking, personal responsibility and continuous growth.
 </p>
 
 <hr style="margin:20px 0;border-color:#1e293b">
 
-<h3 style="color:#22c55e;margin-bottom:10px">
-🌐 About MGOT
-</h3>
+<h3 style="color:#22c55e;margin-bottom:10px">🌐 About MGOT</h3>
 
 <p>
-Community-driven Web3 ecosystem focused on long-term
-growth, transparency and education.
+Community-driven Web3 ecosystem focused on long-term growth, transparency and education.
 </p>
 
 <p>
-The project aims to create a sustainable environment
-where holders, builders and contributors can grow
-together while supporting ecosystem development.
+The project aims to create a sustainable environment where holders, builders and contributors can grow together.
 </p>
 
 <hr style="margin:20px 0;border-color:#1e293b">
 
-<h3 style="color:#22c55e;margin-bottom:10px">
-📚 Education & Growth
-</h3>
+<h3 style="color:#22c55e;margin-bottom:10px">📚 Education & Growth</h3>
 
-<p>
-🧠 <b>Mindset Training</b><br>
-Community-driven mindset, discipline and growth
-education for long-term builders.
-</p>
-
-<p>
-📖 <b>Web3 Learning Hub</b><br>
-Guides explaining DeFi, liquidity, tokenomics,
-blockchain systems and ecosystem mechanics.
-</p>
-
-<p>
-🎙 <b>Community Learning Calls</b><br>
-Live educational sessions for holders, builders
-and future contributors.
-</p>
-
-<hr style="margin:20px 0;border-color:#1e293b">
-
-<h3 style="color:#22c55e;margin-bottom:10px">
-🤝 Community Activities
-</h3>
-
-<p>
-🏆 <b>Weekly Challenges</b><br>
-Community missions, learning tasks and engagement
-activities.
-</p>
-
-<p>
-🎁 <b>Contribution Rewards</b><br>
-Recognition and rewards for active ecosystem
-contributors.
-</p>
-
-<p>
-🗳 <b>Future DAO Governance</b><br>
-Community voting system designed for future
-ecosystem decisions.
-</p>
-
-<hr style="margin:20px 0;border-color:#1e293b">
-
-<h3 style="color:#22c55e;margin-bottom:10px">
-🎮 Gaming & Gamification
-</h3>
-
-<p>
-⚔️ <b>Skill Rewards</b><br>
-Future skill-based reward systems focused on
-knowledge, participation and growth.
-</p>
-
-<p>
-📈 <b>Leaderboards</b><br>
-Ranking systems highlighting active and engaged
-community members.
-</p>
-
-<p>
-🕹 <b>Mini Web3 Games</b><br>
-Educational blockchain-inspired games designed
-to support learning and community interaction.
-</p>
-
-<hr style="margin:20px 0;border-color:#1e293b">
-
-<h3 style="color:#22c55e;margin-bottom:10px">
-🔍 Transparency
-</h3>
-
-<p>
-All wallets, treasury systems and ecosystem
-operations are designed to remain publicly
-verifiable on-chain.
-</p>
-
-<p>
-Transparency, accountability and community trust
-remain core pillars of the MGOT ecosystem.
-</p>
+<p>🧠 Mindset Training</p>
+<p>📖 Web3 Learning Hub</p>
+<p>🎙 Community Learning Calls</p>
 
 `;
 
 document.getElementById("modal").classList.remove("hidden");
+}
 
 
 function showLinks(){
