@@ -2284,9 +2284,10 @@ document.getElementById("xp").innerText=xp;
 }else{
 document.getElementById("wrong").play();
 buttons[idx].classList.add("wrong");
-buttons[gameQuestions[i].c].classList.add("correct");}
+buttons[gameQuestions[i].c].classList.add("correct");
 wrongAnswers++;
-  
+}
+
 setTimeout(next,800);
 }
 
