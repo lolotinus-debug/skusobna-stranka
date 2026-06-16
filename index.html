@@ -6589,6 +6589,7 @@ let i=0,
 xp=0,
 correctAnswers=0,
 wrongAnswers=0,
+let streak = 0;
 timer;
 let playerName="";
 let gameQuestions=[];
@@ -6709,12 +6710,23 @@ document.getElementById("xp").innerText = xp;
 updateLevel();
 
 correctAnswers++;
-if(correctAnswers === 1){
+streak++;                             
+if(streak === 10){
+
 showAchievement(
-"🏆 First Correct Answer"
+"👑 10 Answer Streak (+15 XP)"
 );
+
+xp += 15;
+
+document.getElementById("xp").innerText = xp;
+
+updateLevel();
+
+}
 }                             
 }else{
+streak = 0;
 document.getElementById("wrong").play();
 buttons[idx].classList.add("wrong");
 buttons[gameQuestions[i].c].classList.add("correct");
@@ -6801,6 +6813,7 @@ xp = 0;
 updateLevel();
 correctAnswers = 0;
 wrongAnswers = 0;
+streak = 0;
 
 clearInterval(timer);
 
