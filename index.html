@@ -186,10 +186,87 @@ background:#0f172a;
 #topMenu a:hover{
 background:#1e293b;
 }
+
+/* MODAL */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+backdrop-filter:blur(5px);
+}
+
+.modal.hidden{
+display:none;
+}
+
+.modal-box{
+width:90%;
+max-width:700px;
+background:#0f172a;
+border:1px solid rgba(255,255,255,.1);
+border-radius:20px;
+padding:30px;
+position:relative;
+animation:fadeIn .25s ease;
+}
+
+.modal-box h2{
+margin-bottom:15px;
+color:#22c55e;
+}
+
+.modal-box p{
+margin-bottom:12px;
+line-height:1.7;
+}
+
+.modal-box a{
+color:#22c55e;
+text-decoration:none;
+}
+
+.modal-box a:hover{
+text-decoration:underline;
+}
+
+.close-btn{
+position:absolute;
+top:15px;
+right:15px;
+width:40px;
+height:40px;
+border:none;
+border-radius:50%;
+background:#1e293b;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+  
 </style>
 </head>
 
 <body>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+
+<div class="modal-box">
+
+<button class="close-btn" onclick="closeModal()">✕</button>
+
+<h2 id="modalTitle"></h2>
+
+<div id="modalContent"></div>
+
+</div>
+
+</div>  
 
 <div id="topMenu">
 <a href="#" onclick="showAbout()">ABOUT MGOT</a>
@@ -2419,35 +2496,68 @@ load();
 }
 function showAbout(){
 
-alert(
-`MGOT
+document.getElementById("modalTitle").innerHTML =
+"ABOUT MGOT";
 
-Mindset Growth Optimization Token
+document.getElementById("modalContent").innerHTML = `
+<p><b>Mindset Growth Optimization Token</b></p>
 
-Educational ecosystem focused on:
-• Knowledge
-• Mindset
-• Discipline
-• Self-improvement
-• Strategy Games
-• Quiz Platform`
-);
+<p>
+MGOT is an educational ecosystem focused on:
+</p>
 
+<p>
+✅ Knowledge<br>
+✅ Mindset<br>
+✅ Discipline<br>
+✅ Self Improvement<br>
+✅ Strategy Games<br>
+✅ Quiz Platform
+</p>
+
+<p>
+The goal is to help people learn,
+grow and build better habits through
+education and gamification.
+</p>
+`;
+
+document.getElementById("modal").classList.remove("hidden");
 }
 
 function showLinks(){
 
-alert(`Official Links
+document.getElementById("modalTitle").innerHTML =
+"OFFICIAL LINKS";
 
-Website:
+document.getElementById("modalContent").innerHTML = `
+<p>
+🌐 Website<br>
+<a href="https://lolotinus-debug.github.io/mgot-site/" target="_blank">
 https://lolotinus-debug.github.io/mgot-site/
+</a>
+</p>
 
-Telegram:
+<p>
+📢 Telegram<br>
+<a href="https://t.me/MGOT_Community" target="_blank">
 https://t.me/MGOT_Community
+</a>
+</p>
 
-X:
-https://x.com/MGOT_Community`);
+<p>
+𝕏 X (Twitter)<br>
+<a href="https://x.com/MGOT_Community" target="_blank">
+https://x.com/MGOT_Community
+</a>
+</p>
+`;
 
+document.getElementById("modal").classList.remove("hidden");
+}
+
+function closeModal(){
+document.getElementById("modal").classList.add("hidden");
 }
 render();
 
