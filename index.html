@@ -163,7 +163,29 @@ list-style:none;
 from{opacity:0;transform:translateY(10px);}
 to{opacity:1;transform:translateY(0);}
 }
+#topMenu{
+position:fixed;
+top:15px;
+left:15px;
+display:flex;
+gap:20px;
+z-index:9999;
+}
 
+#topMenu a{
+color:#fff;
+text-decoration:none;
+font-weight:700;
+font-size:14px;
+padding:8px 12px;
+border:1px solid rgba(255,255,255,.15);
+border-radius:10px;
+background:#0f172a;
+}
+
+#topMenu a:hover{
+background:#1e293b;
+}
 </style>
 </head>
 
@@ -209,6 +231,7 @@ color:white;
 ">
 
 <option value="All">All Categories</option>
+<option value="MGOT">MGOT</option>
 <option value="Science">Science</option>
 <option value="Geography">Geography</option>
 <option value="Technology">Technology</option>
@@ -2394,7 +2417,38 @@ gameQuestions = pool.slice(0,20);
 
 load();
 }
+function showAbout(){
 
+alert(
+`MGOT
+
+Mindset Growth Optimization Token
+
+Educational ecosystem focused on:
+• Knowledge
+• Mindset
+• Discipline
+• Self-improvement
+• Strategy Games
+• Quiz Platform`
+);
+
+}
+
+function showLinks(){
+
+alert(`Official Links
+
+Website:
+https://lolotinus-debug.github.io/mgot-site/
+
+Telegram:
+https://t.me/MGOT_Community
+
+X:
+https://x.com/MGOT_Community`);
+
+}
 render();
 
 </script>
