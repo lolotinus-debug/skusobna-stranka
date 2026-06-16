@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGOT knowledge Quiz</title>
+  
+<link rel="icon" type="image/png" href="logo.png">
+  
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#020617;
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* BACKGROUND */
+.background-glow{
+position:fixed;
+width:800px;
+height:800px;
+border-radius:50%;
+background:radial-gradient(circle, rgba(34,197,94,.25), transparent 70%);
+top:-250px;
+left:-200px;
+filter:blur(80px);
+z-index:-1;
+}
+
+.card{
+max-width:850px;
+margin:20px auto;
+padding:25px;
+background:rgba(15,23,42,.95);
+border-radius:20px;
+border:1px solid rgba(255,255,255,.08);
+animation:fadeIn .4s ease;
+}
+
+.hidden{display:none;}
+
+header{
+text-align:center;
+padding:30px;
+}
+
+header h1{
+font-size:2.5rem;
+}
+
+button{
+padding:14px 20px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-weight:700;
+transition:.3s;
+}
+
+button:hover{transform:scale(1.03);}
+
+/* INPUT */
+input{
+width:100%;
+padding:12px;
+margin-top:15px;
+border-radius:12px;
+border:none;
+background:#0f172a;
+color:white;
+}
+
+/* TOP BAR */
+.top{
+display:flex;
+justify-content:space-between;
+margin-bottom:15px;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.top div{
+background:#0f172a;
+padding:10px;
+border-radius:10px;
+font-weight:700;
+}
+
+/* PROGRESS */
+.bar{
+height:12px;
+background:#0f172a;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:20px;
+}
+
+#progress{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#22c55e,#3b82f6);
+transition:.3s;
+}
+
+/* QUESTIONS */
+#question{
+text-align:center;
+margin-bottom:20px;
+font-size:1.4rem;
+}
+
+.answers{
+display:grid;
+gap:12px;
+}
+
+.answers button{
+background:#0f172a;
+color:white;
+text-align:left;
+border:1px solid rgba(255,255,255,.1);
+}
+
+.correct{background:#16a34a !important;}
+.wrong{background:#dc2626 !important;}
+
+/* RESULT */
+#result{
+text-align:center;
+}
+
+.badge{
+display:inline-block;
+padding:10px 15px;
+background:linear-gradient(45deg,#f59e0b,#facc15);
+color:#111;
+border-radius:999px;
+font-weight:800;
+margin-top:10px;
+}
+
+/* LEADERBOARD */
+li{
+background:#0f172a;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+list-style:none;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<header>
+
+<div style="text-align:center; margin-bottom:10px;">
+<img src="logo.png" alt="MGOT Logo"
+style="
+width:140px;
+height:auto;
+filter: drop-shadow(0 0 15px #22c55e);
+animation: glowPulse 2s infinite;
+">
+</div>
+
+<h1>MGOT KNOWLEDGE QUIZ</h1>
+<p>Test your mindset. Earn XP. Become Legend.</p>
+
+</header>
+
+<!-- START -->
+<div id="start" class="card">
+<h2>Enter your name</h2>
+<input id="name" placeholder="Your name">
+<select id="category"
+style="
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:#0f172a;
+color:white;
+">
+
+<option value="All">All Categories</option>
+<option value="Science">Science</option>
+<option value="Geography">Geography</option>
+<option value="Technology">Technology</option>
+<option value="Psychology">Psychology</option>
+<option value="Health">Health</option>
+<option value="Food">Food</option>
+<option value="Art">Art</option>
+<option value="Culture">Culture</option>
+<option value="History">History</option>
+<option value="Sports">Sports</option>
+<option value="Space">Space</option>
+<option value="Finance">Finance</option>
+
+</select>
+<button onclick="start()">Start Quiz</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="card hidden">
+
+<div class="top">
+<div>XP: <span id="xp">0</span></div>
+<div>Rank: <span id="rank">Beginner</span></div>
+<div>Time: <span id="time">15</span></div>
+</div>
+
+<div class="bar"><div id="progress"></div></div>
+
+<h2 id="question"></h2>
+
+<div class="answers" id="answers"></div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="card hidden">
+<h2>Quiz Finished 🎉</h2>
+<p>Total XP: <span id="finalXp"></span></p>
+<p>Rank: <span id="finalRank"></span></p>
+<div id="badge" class="badge"></div>
+<button onclick="restart()">Play Again</button>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="card">
+<h2>🏆 Leaderboard</h2>
+
+<button onclick="clearBoard()" style="
+padding:10px 15px;
+margin-bottom:10px;
+border-radius:10px;
+background:#dc2626;
+color:white;
+border:none;
+cursor:pointer;
+font-weight:700;
+">
+Reset Leaderboard
+</button>
+
+<ul id="board"></ul>
+</div>
+
+<audio id="correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+<audio id="wrong" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
+
+<script>
+
+
+const q = [
+
+{
+cat:"MGOT",
+q:"What does MGOT stand for?",
+a:[
+"Mindset Growth Optimization Token",
+"Money Growth Online Token",
+"Meta Global Option Trade",
+"Market Growth Operation"
+],
+c:0
+},
+
+{
+cat:"MGOT",
+q:"What is MGOT primarily focused on?",
+a:[
+"Gaming consoles",
+"Mindset, growth and education",
+"Social media marketing only",
+"Hardware manufacturing"
+],
+c:1
+},
+
+{
+cat:"MGOT",
+q:"What is the core idea behind MGOT?",
+a:[
+"Trading physical goods",
+"Streaming entertainment",
+"Improving mindset and knowledge",
+"Creating video games only"
+],
+c:2
+},
+
+{
+cat:"MGOT",
+q:"Which category best describes MGOT?",
+a:[
+"E-commerce platform",
+"Streaming service",
+"Hardware brand",
+"Educational and mindset ecosystem"
+],
+c:3
+},
+
+{
+cat:"MGOT",
+q:"What does MGOT aim to improve the most?",
+a:[
+"Thinking and personal growth",
+"Fast food industry",
+"Car manufacturing",
+"Sports performance only"
+],
+c:0
+},
+
+{
+cat:"MGOT",
+q:"MGOT is best described as:",
+a:[
+"A bank",
+"A mindset and growth project",
+"A gaming console",
+"A social media app"
+],
+c:1
+},
+
+{
+cat:"MGOT",
+q:"What is a key value of MGOT?",
+a:[
+"Luck-based gambling",
+"Random entertainment",
+"Education and improvement",
+"Hardware sales"
+],
+c:2
+},
+
+{
+cat:"MGOT",
+q:"What does MGOT encourage users to build?",
+a:[
+"Debt and spending",
+"Random guessing",
+"Physical strength only",
+"Knowledge and discipline"
+],
+c:3
+},
+
+{
+cat:"MGOT",
+q:"What is the purpose of MGOT quizzes?",
+a:[
+"Learning and mindset growth",
+"Entertainment only",
+"Buying products",
+"Social ranking only"
+],
+c:0
+},
+
+{
+cat:"MGOT",
+q:"Which idea is closest to MGOT philosophy?",
+a:[
+"Quick money schemes",
+"Continuous self-improvement",
+"Passive scrolling",
+"Random luck wins"
+],
+c:1
+},
+
+{
+cat:"MGOT",
+q:"MGOT is mainly about:",
+a:[
+"Playing casino games",
+"Watching videos",
+"Building a growth mindset",
+"Collecting items"
+],
+c:2
+},
+
+{
+cat:"MGOT",
+q:"What type of users is MGOT aimed at?",
+a:[
+"Only professional traders",
+"Only gamers",
+"Only investors",
+"People who want to learn and grow"
+],
+c:3
+},
+
+{
+cat:"MGOT",
+q:"What is one goal of MGOT system?",
+a:[
+"Encourage learning habits",
+"Encourage gambling",
+"Encourage shopping",
+"Encourage inactivity"
+],
+c:0
+},
+
+{
+cat:"MGOT",
+q:"What makes MGOT different from entertainment apps?",
+a:[
+"It is only for videos",
+"It focuses on education and growth",
+"It is only for chatting",
+"It is only for shopping"
+],
+c:1
+},
+
+{
+cat:"MGOT",
+q:"MGOT promotes which type of thinking?",
+a:[
+"Random guessing",
+"Ignoring knowledge",
+"Critical and growth mindset",
+"Short-term thinking only"
+],
+c:2
+},
+
+{
+cat:"MGOT",
+q:"What is the long-term goal of MGOT users?",
+a:[
+"Fast profits only",
+"Entertainment consumption",
+"Gaming achievements only",
+"Personal improvement"
+],
+c:3
+},
+
+{
+cat:"MGOT",
+q:"MGOT is best categorized as:",
+a:[
+"Educational ecosystem",
+"Crypto exchange",
+"Social network",
+"Streaming platform"
+],
+c:0
+},
+
+{
+cat:"MGOT",
+q:"What does MGOT try to build in users?",
+a:[
+"Random habits",
+"Discipline and knowledge",
+"Addiction to games",
+"Passive behavior"
+],
+c:1
+},
+
+{
+cat:"MGOT",
+q:"Which statement best describes MGOT?",
+a:[
+"A lottery system",
+"A shopping website",
+"A mindset growth system",
+"A music platform"
+],
+c:2
+},
+
+{
+cat:"MGOT",
+q:"What is the philosophy behind MGOT?",
+a:[
+"Luck over skill",
+"Spending over learning",
+"Entertainment over education",
+"Growth through knowledge"
+],
+c:3
+},
+
+{
+cat:"Science",
+q:"What is H2O?",
+a:["Oxygen","Hydrogen","Water","Salt"],
+c:2
+},
+
+{
+cat:"Geography",
+q:"What is the capital of Slovakia?",
+a:["Bratislava","Košice","Praha","Budapest"],
+c:0
+},
+
+{
+cat:"Health",
+q:"How many hours of sleep is recommended for adults?",
+a:["3-4","5-6","7-9","10-12"],
+c:2
+},
+
+{
+cat:"Culture",
+q:"What country is sushi from?",
+a:["China","Japan","Korea","Thailand"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What is the main ingredient of guacamole?",
+a:["Tomato","Avocado","Potato","Cucumber"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does AI stand for?",
+a:[
+"Auto Input",
+"Artificial Intelligence",
+"Advanced Internet",
+"Active Interface"
+],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What is cognitive bias?",
+a:[
+"Random thinking error",
+"Systematic error in thinking",
+"Perfect logic",
+"Memory upgrade"
+],
+c:1
+},
+
+{
+cat:"Art",
+q:"Who painted Mona Lisa?",
+a:[
+"Van Gogh",
+"Picasso",
+"Leonardo da Vinci",
+"Michelangelo"
+],
+c:2
+},
+
+{
+cat:"Science",
+q:"What planet is known as the Red Planet?",
+a:["Venus","Mars","Jupiter","Mercury"],
+c:1
+},
+{
+cat:"Science",
+q:"What gas do plants absorb from the atmosphere?",
+a:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],
+c:2
+},
+
+{
+cat:"Science",
+q:"What is the center of an atom called?",
+a:["Electron","Nucleus","Proton","Shell"],
+c:1
+},
+
+{
+cat:"Science",
+q:"How many planets are in the Solar System?",
+a:["7","8","9","10"],
+c:1
+},
+
+{
+cat:"Science",
+q:"What is the chemical symbol for gold?",
+a:["Ag","Au","Go","Gd"],
+c:1
+},
+
+{
+cat:"Science",
+q:"What force keeps planets in orbit around the Sun?",
+a:["Magnetism","Electricity","Gravity","Pressure"],
+c:2
+},
+
+{
+cat:"Science",
+q:"What is the boiling point of water at sea level?",
+a:["50°C","75°C","100°C","150°C"],
+c:2
+},
+
+{
+cat:"Science",
+q:"What is the largest organ in the human body?",
+a:["Heart","Liver","Skin","Brain"],
+c:2
+},
+
+{
+cat:"Science",
+q:"What is the hardest natural substance on Earth?",
+a:["Iron","Diamond","Gold","Quartz"],
+c:1
+},
+
+{
+cat:"Science",
+q:"What gas do humans need to breathe?",
+a:["Nitrogen","Carbon Dioxide","Oxygen","Helium"],
+c:2
+},
+
+{
+cat:"Science",
+q:"Which organ pumps blood through the body?",
+a:["Brain","Lungs","Heart","Kidney"],
+c:2
+},
+
+{
+cat:"Science",
+q:"What is the closest planet to the Sun?",
+a:["Venus","Mercury","Earth","Mars"],
+c:1
+},
+
+{
+cat:"Science",
+q:"How many bones does an adult human typically have?",
+a:["206","180","250","300"],
+c:0
+},
+
+{
+cat:"Science",
+q:"What part of the plant absorbs water from the soil?",
+a:["Leaf","Flower","Root","Stem"],
+c:2
+},
+
+{
+cat:"Science",
+q:"Which blood type is known as the universal donor?",
+a:["A","B","AB","O Negative"],
+c:3
+},
+
+{
+cat:"Science",
+q:"What is measured with a thermometer?",
+a:["Pressure","Mass","Temperature","Speed"],
+c:2
+},
+
+{
+cat:"Science",
+q:"What is the largest planet in the Solar System?",
+a:["Earth","Jupiter","Saturn","Neptune"],
+c:1
+},
+
+{
+cat:"Science",
+q:"What is the process by which plants make food?",
+a:["Respiration","Photosynthesis","Digestion","Fermentation"],
+c:1
+},
+
+{
+cat:"Science",
+q:"What particle has a negative charge?",
+a:["Proton","Neutron","Electron","Photon"],
+c:2
+},
+
+{
+cat:"Science",
+q:"Which planet is the largest in our Solar System?",
+a:["Earth","Mars","Saturn","Jupiter"],
+c:3
+},
+
+{
+cat:"Geography",
+q:"What is the capital of France?",
+a:["Paris","Lyon","Marseille","Nice"],
+c:0
+},
+
+{
+cat:"Geography",
+q:"Which continent is Egypt in?",
+a:["Asia","Europe","Africa","South America"],
+c:2
+},
+
+{
+cat:"Geography",
+q:"What is the largest ocean on Earth?",
+a:["Atlantic","Indian","Pacific","Arctic"],
+c:2
+},
+
+{
+cat:"Geography",
+q:"Which country has the largest population?",
+a:["India","USA","China","Brazil"],
+c:0
+},
+
+{
+cat:"Geography",
+q:"What is the capital of Japan?",
+a:["Kyoto","Osaka","Tokyo","Nagoya"],
+c:2
+},
+
+{
+cat:"Geography",
+q:"Which river is the longest in the world?",
+a:["Amazon","Danube","Nile","Mississippi"],
+c:2
+},
+
+{
+cat:"Geography",
+q:"Which country is known as the Land of the Rising Sun?",
+a:["China","Japan","Thailand","Korea"],
+c:1
+},
+
+{
+cat:"Geography",
+q:"What is the largest desert in the world?",
+a:["Sahara","Gobi","Antarctic Desert","Arabian Desert"],
+c:2
+},
+
+{
+cat:"Geography",
+q:"Which country is famous for the pyramids?",
+a:["Mexico","Egypt","Peru","India"],
+c:1
+},
+
+{
+cat:"Geography",
+q:"What is the capital of Canada?",
+a:["Toronto","Montreal","Ottawa","Vancouver"],
+c:2
+},
+{
+cat:"Psychology",
+q:"What does IQ commonly measure?",
+a:["Strength","Intelligence","Vision","Memory"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What emotion is commonly associated with danger?",
+a:["Joy","Fear","Surprise","Love"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What is empathy?",
+a:["Ignoring feelings","Understanding others' feelings","Winning arguments","Being shy"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"Which part of the day is usually associated with the body's highest alertness?",
+a:["Morning","Afternoon","Night","Midnight"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What is stress?",
+a:["A physical and mental response to challenges","A disease","A type of memory","A personality trait"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What is motivation?",
+a:["A sleeping disorder","The drive to achieve goals","A type of emotion","A memory skill"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"Which memory stores information for a few seconds?",
+a:["Long-term memory","Short-term memory","Muscle memory","Visual memory"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What is self-esteem?",
+a:["Physical fitness","Opinion about your own worth","IQ level","Social status"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What is a habit?",
+a:["A repeated behavior","A random thought","An emotion","A dream"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What does body language mainly involve?",
+a:["Words","Writing","Non-verbal communication","Music"],
+c:2
+},
+
+{
+cat:"Psychology",
+q:"What is procrastination?",
+a:["Working fast","Delaying tasks","Learning quickly","Sleeping more"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"Which emotion is usually linked to loss?",
+a:["Happiness","Anger","Sadness","Excitement"],
+c:2
+},
+
+{
+cat:"Psychology",
+q:"What is attention?",
+a:["Ability to focus","Ability to run","Ability to hear","Ability to sleep"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What is confidence?",
+a:["Trust in your abilities","Fear of failure","High IQ","Good memory"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What is a phobia?",
+a:["A hobby","An intense fear","A personality type","A memory problem"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"What is resilience?",
+a:["Ability to recover from difficulties","Physical strength","Fast learning","Leadership"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What is peer pressure?",
+a:["Pressure from weather","Influence from others","Work stress","Family traditions"],
+c:1
+},
+
+{
+cat:"Psychology",
+q:"Which emotion is most associated with achievement?",
+a:["Pride","Fear","Sadness","Confusion"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What is mindfulness?",
+a:["Being aware of the present moment","Sleeping deeply","Studying harder","Avoiding emotions"],
+c:0
+},
+
+{
+cat:"Psychology",
+q:"What is cognitive bias?",
+a:["Systematic thinking error","Perfect logic","Memory loss","Dreaming"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"What does CPU stand for?",
+a:["Central Processing Unit","Computer Power Unit","Central Program Utility","Core Processing Utility"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"What does RAM stand for?",
+a:["Random Access Memory","Rapid Access Module","Read Access Memory","Remote Access Memory"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"Which company created Windows?",
+a:["Apple","Microsoft","Google","IBM"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does URL stand for?",
+a:["Universal Resource Locator","Uniform Resource Locator","United Resource Link","Universal Reference Link"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"Which company developed the Android operating system?",
+a:["Microsoft","Google","Apple","Samsung"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does USB stand for?",
+a:["Universal Serial Bus","United System Board","Universal System Base","User Serial Board"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"Which programming language is commonly used for web pages?",
+a:["HTML","Excel","Photoshop","Windows"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"What is the brain of a computer?",
+a:["Monitor","Keyboard","CPU","Printer"],
+c:2
+},
+
+{
+cat:"Technology",
+q:"What does Wi-Fi primarily provide?",
+a:["Electricity","Internet connectivity","Storage","Processing power"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"Which company makes the iPhone?",
+a:["Samsung","Google","Apple","Sony"],
+c:2
+},
+
+{
+cat:"Technology",
+q:"What is a browser used for?",
+a:["Cooking","Browsing websites","Editing photos","Playing music"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does GPS stand for?",
+a:["Global Positioning System","General Position Service","Global Program System","General Program Service"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"What is phishing?",
+a:["A fishing hobby","A cyber scam","A game","A hardware upgrade"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What is cloud storage?",
+a:["Storage on internet servers","Storage in the sky","USB storage","Hard drive storage"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"Which company owns YouTube?",
+a:["Meta","Google","Microsoft","Amazon"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does VPN stand for?",
+a:["Virtual Private Network","Visual Personal Network","Virtual Program Node","Verified Private Node"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"What is malware?",
+a:["Useful software","Malicious software","Video software","Music software"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does AI stand for?",
+a:["Artificial Intelligence","Automatic Internet","Advanced Interface","Artificial Internet"],
+c:0
+},
+
+{
+cat:"Technology",
+q:"What is a password used for?",
+a:["Cooking","Security","Gaming","Printing"],
+c:1
+},
+
+{
+cat:"Technology",
+q:"What does HTML stand for?",
+a:["HyperText Markup Language","HighText Machine Language","HyperTool Markup Language","Home Tool Markup Language"],
+c:0
+},
+
+{
+cat:"Health",
+q:"Which organ pumps blood through the body?",
+a:["Brain","Heart","Liver","Kidney"],
+c:1
+},
+
+{
+cat:"Health",
+q:"How many teeth does a typical adult have?",
+a:["28","30","32","34"],
+c:2
+},
+
+{
+cat:"Health",
+q:"Which vitamin is mainly produced when skin is exposed to sunlight?",
+a:["Vitamin A","Vitamin B12","Vitamin C","Vitamin D"],
+c:3
+},
+
+{
+cat:"Health",
+q:"What is the normal average body temperature?",
+a:["35°C","37°C","39°C","41°C"],
+c:1
+},
+
+{
+cat:"Health",
+q:"Which organ is responsible for breathing?",
+a:["Heart","Liver","Lungs","Kidneys"],
+c:2
+},
+
+{
+cat:"Health",
+q:"How much of the human body is approximately water?",
+a:["20%","40%","60%","80%"],
+c:2
+},
+
+{
+cat:"Health",
+q:"Which nutrient is most important for muscle growth?",
+a:["Sugar","Protein","Salt","Fiber"],
+c:1
+},
+
+{
+cat:"Health",
+q:"What does BMI stand for?",
+a:["Body Mass Index","Body Muscle Indicator","Basic Mass Index","Body Measurement Indicator"],
+c:0
+},
+
+{
+cat:"Health",
+q:"Which blood type is known as the universal donor?",
+a:["A","B","AB","O Negative"],
+c:3
+},
+
+{
+cat:"Health",
+q:"How many chambers does the human heart have?",
+a:["2","3","4","5"],
+c:2
+},
+
+{
+cat:"Health",
+q:"Which mineral is important for strong bones?",
+a:["Iron","Calcium","Potassium","Zinc"],
+c:1
+},
+
+{
+cat:"Health",
+q:"What is the largest organ of the human body?",
+a:["Heart","Brain","Skin","Liver"],
+c:2
+},
+
+{
+cat:"Health",
+q:"Which part of the body contains the femur?",
+a:["Arm","Leg","Hand","Foot"],
+c:1
+},
+
+{
+cat:"Health",
+q:"What is the recommended minimum daily water intake for many adults?",
+a:["1 liter","2 liters","5 liters","8 liters"],
+c:1
+},
+
+{
+cat:"Health",
+q:"Which organ filters waste from the blood?",
+a:["Liver","Lungs","Kidneys","Pancreas"],
+c:2
+},
+
+{
+cat:"Health",
+q:"What is hypertension?",
+a:["Low blood pressure","High blood pressure","Low sugar","High cholesterol"],
+c:1
+},
+
+{
+cat:"Health",
+q:"Which exercise is best known for improving cardiovascular fitness?",
+a:["Running","Sleeping","Reading","Drawing"],
+c:0
+},
+
+{
+cat:"Health",
+q:"What does CPR stand for?",
+a:["Cardio Pulmonary Resuscitation","Cardiac Pulse Recovery","Critical Patient Response","Cardio Pressure Reset"],
+c:0
+},
+
+{
+cat:"Health",
+q:"Which nutrient helps prevent scurvy?",
+a:["Vitamin A","Vitamin C","Vitamin D","Iron"],
+c:1
+},
+
+{
+cat:"Health",
+q:"Which body system fights infections?",
+a:["Digestive system","Immune system","Respiratory system","Skeletal system"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What is the main ingredient in bread?",
+a:["Rice","Flour","Sugar","Milk"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which fruit is known for being high in potassium?",
+a:["Apple","Banana","Orange","Grape"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What is sushi traditionally wrapped in?",
+a:["Seaweed","Lettuce","Bread","Cheese"],
+c:0
+},
+
+{
+cat:"Food",
+q:"Which country is famous for pizza?",
+a:["France","Spain","Italy","Germany"],
+c:2
+},
+
+{
+cat:"Food",
+q:"What is the primary ingredient in guacamole?",
+a:["Tomato","Avocado","Pepper","Onion"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which vitamin is abundant in citrus fruits?",
+a:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],
+c:2
+},
+
+{
+cat:"Food",
+q:"What food do bees produce?",
+a:["Milk","Honey","Jam","Butter"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which nut is used to make marzipan?",
+a:["Peanut","Walnut","Almond","Cashew"],
+c:2
+},
+
+{
+cat:"Food",
+q:"What is tofu mainly made from?",
+a:["Rice","Soybeans","Potatoes","Corn"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which country is famous for tacos?",
+a:["Brazil","Mexico","Argentina","Peru"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What color is a ripe banana usually?",
+a:["Blue","Red","Yellow","Purple"],
+c:2
+},
+
+{
+cat:"Food",
+q:"Which dairy product is used on most pizzas?",
+a:["Butter","Yogurt","Cheese","Cream"],
+c:2
+},
+
+{
+cat:"Food",
+q:"What is the world's most consumed beverage after water?",
+a:["Coffee","Tea","Milk","Juice"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which grain is commonly used to make pasta?",
+a:["Rice","Wheat","Corn","Barley"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What is hummus primarily made from?",
+a:["Beans","Chickpeas","Potatoes","Lentils"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which fruit contains seeds on the outside?",
+a:["Apple","Strawberry","Orange","Peach"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What spice is commonly used in curry?",
+a:["Turmeric","Vanilla","Mint","Cinnamon"],
+c:0
+},
+
+{
+cat:"Food",
+q:"Which country is known for croissants?",
+a:["Italy","France","Belgium","Austria"],
+c:1
+},
+
+{
+cat:"Food",
+q:"What is mozzarella?",
+a:["A fruit","A cheese","A spice","A vegetable"],
+c:1
+},
+
+{
+cat:"Food",
+q:"Which vegetable is used to make french fries?",
+a:["Carrot","Potato","Turnip","Pumpkin"],
+c:1
+},
+
+{
+cat:"Art",
+q:"Who painted the Mona Lisa?",
+a:["Van Gogh","Picasso","Leonardo da Vinci","Michelangelo"],
+c:2
+},
+
+{
+cat:"Art",
+q:"Who painted Starry Night?",
+a:["Claude Monet","Vincent van Gogh","Pablo Picasso","Salvador Dalí"],
+c:1
+},
+
+{
+cat:"Art",
+q:"Which artist is famous for the painting The Persistence of Memory?",
+a:["Salvador Dalí","Monet","Rembrandt","Matisse"],
+c:0
+},
+
+{
+cat:"Art",
+q:"What is a sculpture?",
+a:["A painting","A three-dimensional artwork","A song","A poem"],
+c:1
+},
+
+{
+cat:"Art",
+q:"Which colors are known as primary colors in traditional art?",
+a:["Red, Blue, Yellow","Green, Orange, Purple","Black, White, Gray","Red, Green, Blue"],
+c:0
+},
+
+{
+cat:"Art",
+q:"Who painted the ceiling of the Sistine Chapel?",
+a:["Raphael","Leonardo da Vinci","Michelangelo","Donatello"],
+c:2
+},
+
+{
+cat:"Art",
+q:"What is watercolor?",
+a:["Paint mixed with water","Paint mixed with oil","Digital art","A sculpture style"],
+c:0
+},
+
+{
+cat:"Art",
+q:"Which famous artist cut off part of his ear?",
+a:["Picasso","Van Gogh","Dalí","Monet"],
+c:1
+},
+
+{
+cat:"Art",
+q:"What is a self-portrait?",
+a:["A painting of yourself","A landscape","A sculpture","A still life"],
+c:0
+},
+
+{
+cat:"Art",
+q:"Which art movement is Pablo Picasso associated with?",
+a:["Cubism","Impressionism","Surrealism","Baroque"],
+c:0
+},
+
+{
+cat:"Art",
+q:"What is a canvas?",
+a:["A type of paint","A surface for painting","A sculpture tool","A camera"],
+c:1
+},
+
+{
+cat:"Art",
+q:"Which museum houses the Mona Lisa?",
+a:["British Museum","Louvre","Prado Museum","Metropolitan Museum"],
+c:1
+},
+
+{
+cat:"Art",
+q:"What is pottery?",
+a:["Glass art","Art made from clay","Metal art","Digital art"],
+c:1
+},
+
+{
+cat:"Art",
+q:"What is a mural?",
+a:["A large artwork on a wall","A sculpture","A photograph","A sketchbook"],
+c:0
+},
+
+{
+cat:"Art",
+q:"Which artist is famous for Campbell's Soup Cans?",
+a:["Andy Warhol","Picasso","Van Gogh","Monet"],
+c:0
+},
+
+{
+cat:"Art",
+q:"What does a photographer primarily create?",
+a:["Music","Photographs","Sculptures","Poems"],
+c:1
+},
+
+{
+cat:"Art",
+q:"Which art style focuses on realistic representation?",
+a:["Realism","Cubism","Abstract","Surrealism"],
+c:0
+},
+
+{
+cat:"Art",
+q:"What is sketching?",
+a:["Quick drawing","Painting with oil","Photography","Sculpting"],
+c:0
+},
+
+{
+cat:"Art",
+q:"What is an abstract painting?",
+a:["A realistic painting","Art that does not attempt realistic representation","A sculpture","A mural"],
+c:1
+},
+
+{
+cat:"Art",
+q:"Which famous statue was created by Michelangelo?",
+a:["David","The Thinker","Venus de Milo","Liberty"],
+c:0
+},
+
+{
+cat:"Space",
+q:"What is the closest star to Earth?",
+a:["Sirius","Alpha Centauri","The Sun","Betelgeuse"],
+c:2
+},
+
+{
+cat:"Space",
+q:"Which planet is known as the Red Planet?",
+a:["Venus","Mars","Jupiter","Mercury"],
+c:1
+},
+
+{
+cat:"Space",
+q:"What is the largest planet in our Solar System?",
+a:["Earth","Saturn","Jupiter","Neptune"],
+c:2
+},
+
+{
+cat:"Space",
+q:"How many planets are in the Solar System?",
+a:["7","8","9","10"],
+c:1
+},
+
+{
+cat:"Space",
+q:"Which planet is closest to the Sun?",
+a:["Venus","Mercury","Earth","Mars"],
+c:1
+},
+
+{
+cat:"Space",
+q:"What galaxy contains our Solar System?",
+a:["Andromeda","Milky Way","Whirlpool","Sombrero"],
+c:1
+},
+
+{
+cat:"Space",
+q:"What is Earth's natural satellite?",
+a:["Mars","Moon","Venus","Titan"],
+c:1
+},
+
+{
+cat:"Space",
+q:"Which planet is famous for its rings?",
+a:["Jupiter","Mars","Saturn","Venus"],
+c:2
+},
+
+{
+cat:"Space",
+q:"Who was the first human in space?",
+a:["Neil Armstrong","Yuri Gagarin","Buzz Aldrin","John Glenn"],
+c:1
+},
+
+{
+cat:"Space",
+q:"Who was the first person to walk on the Moon?",
+a:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","Michael Collins"],
+c:2
+},
+
+{
+cat:"Space",
+q:"What is the name of NASA's space telescope launched in 1990?",
+a:["Kepler","James Webb","Hubble","Voyager"],
+c:2
+},
+
+{
+cat:"Space",
+q:"Which planet is known for having the strongest storms?",
+a:["Earth","Jupiter","Mars","Mercury"],
+c:1
+},
+
+{
+cat:"Space",
+q:"What is a shooting star actually called?",
+a:["Planet","Meteor","Comet","Asteroid"],
+c:1
+},
+
+{
+cat:"Space",
+q:"What is the name of the first artificial satellite?",
+a:["Apollo","Sputnik 1","Voyager","Hubble"],
+c:1
+},
+
+{
+cat:"Space",
+q:"Which planet has the most moons currently known?",
+a:["Earth","Jupiter","Saturn","Neptune"],
+c:2
+},
+
+{
+cat:"Space",
+q:"What force keeps planets orbiting the Sun?",
+a:["Magnetism","Electricity","Gravity","Pressure"],
+c:2
+},
+
+{
+cat:"Space",
+q:"Which planet is often called Earth's twin?",
+a:["Mars","Venus","Mercury","Saturn"],
+c:1
+},
+
+{
+cat:"Space",
+q:"What is the name of the nearest galaxy to the Milky Way?",
+a:["Andromeda","Whirlpool","Triangulum","Sombrero"],
+c:0
+},
+
+{
+cat:"Space",
+q:"What is a black hole?",
+a:["A dark planet","A region with extremely strong gravity","A dead star","A moon"],
+c:1
+},
+
+{
+cat:"Space",
+q:"Which space agency operates the International Space Station together with international partners?",
+a:["NASA","ESA","JAXA","All of these"],
+c:3
+},
+
+{
+cat:"Finance",
+q:"What is money primarily used for?",
+a:["Decoration","Exchange of value","Fuel","Entertainment"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is a budget?",
+a:["A spending plan","A type of tax","A bank account","A loan"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"What is inflation?",
+a:["Rise in prices over time","Fall in prices","Increase in salaries","Economic growth"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"Which institution commonly stores your money?",
+a:["Library","Bank","Museum","School"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is a loan?",
+a:["Money borrowed","Money earned","Money invested","Money donated"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"What is interest?",
+a:["A hobby","Cost of borrowing money","A tax","A salary"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is profit?",
+a:["Money lost","Income minus expenses","A tax payment","A debt"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is an investment?",
+a:["Spending money on food","Using money to earn future returns","Paying taxes","Repaying debt"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What does ATM stand for?",
+a:["Automatic Teller Machine","Auto Transfer Money","Advanced Transaction Method","Automated Tax Machine"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"What is a credit card?",
+a:["A savings account","A payment card that borrows money","A debit account","A stock certificate"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is a stock?",
+a:["Ownership share in a company","A loan","A tax","A currency"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"What is diversification in investing?",
+a:["Buying one asset","Spreading investments across assets","Selling everything","Avoiding investing"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is a cryptocurrency?",
+a:["Digital currency","Paper money","Government tax","Gold certificate"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"Which cryptocurrency was created first?",
+a:["Ethereum","Solana","Bitcoin","Litecoin"],
+c:2
+},
+
+{
+cat:"Finance",
+q:"What is a bull market?",
+a:["Market trending upward","Market trending downward","Market closed","Market with low volume"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"What is a bear market?",
+a:["Market trending upward","Market trending downward","Market holiday","Stable market"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What does ROI stand for?",
+a:["Rate Of Income","Return On Investment","Risk Of Inflation","Return Of Interest"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is a savings account mainly used for?",
+a:["Borrowing money","Storing money safely","Buying stocks","Paying taxes"],
+c:1
+},
+
+{
+cat:"Finance",
+q:"What is debt?",
+a:["Money owed","Money earned","Money invested","Money donated"],
+c:0
+},
+
+{
+cat:"Finance",
+q:"Why do people invest?",
+a:["To lose money","To grow wealth over time","To pay taxes","To avoid banks"],
+c:1
+},
+
+{
+cat:"History",
+q:"Who was the first President of the United States?",
+a:["Abraham Lincoln","George Washington","Thomas Jefferson","John Adams"],
+c:1
+},
+
+{
+cat:"History",
+q:"In which year did World War II end?",
+a:["1943","1945","1947","1950"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which ancient civilization built the pyramids?",
+a:["Romans","Greeks","Egyptians","Persians"],
+c:2
+},
+
+{
+cat:"History",
+q:"Who discovered America in 1492?",
+a:["Marco Polo","Christopher Columbus","Magellan","Cook"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which wall fell in 1989?",
+a:["Great Wall","Berlin Wall","Hadrian's Wall","Western Wall"],
+c:1
+},
+
+{
+cat:"History",
+q:"Who was known as the first Roman Emperor?",
+a:["Nero","Augustus","Caesar","Trajan"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which ship famously sank in 1912?",
+a:["Britannic","Titanic","Olympic","Victoria"],
+c:1
+},
+
+{
+cat:"History",
+q:"Who was the leader of Nazi Germany during WWII?",
+a:["Stalin","Hitler","Mussolini","Churchill"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which country gifted the Statue of Liberty to the USA?",
+a:["Germany","France","Italy","Spain"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which civilization invented democracy?",
+a:["Romans","Greeks","Egyptians","Persians"],
+c:1
+},
+
+{
+cat:"History",
+q:"Who was the first man on the Moon?",
+a:["Buzz Aldrin","Neil Armstrong","Yuri Gagarin","John Glenn"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which empire was ruled by Genghis Khan?",
+a:["Roman Empire","Ottoman Empire","Mongol Empire","British Empire"],
+c:2
+},
+
+{
+cat:"History",
+q:"What year did World War I begin?",
+a:["1914","1916","1918","1920"],
+c:0
+},
+
+{
+cat:"History",
+q:"Who wrote the Declaration of Independence?",
+a:["George Washington","Thomas Jefferson","Lincoln","Franklin"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which city was buried by Mount Vesuvius?",
+a:["Athens","Rome","Pompeii","Sparta"],
+c:2
+},
+
+{
+cat:"History",
+q:"Which country was ruled by pharaohs?",
+a:["Greece","Egypt","Persia","India"],
+c:1
+},
+
+{
+cat:"History",
+q:"Who was known as the Maid of Orleans?",
+a:["Cleopatra","Joan of Arc","Elizabeth I","Victoria"],
+c:1
+},
+
+{
+cat:"History",
+q:"What was the name of the first successful English colony in America?",
+a:["Boston","Jamestown","Plymouth","Yorktown"],
+c:1
+},
+
+{
+cat:"History",
+q:"Which famous leader crossed the Alps with elephants?",
+a:["Caesar","Alexander","Hannibal","Napoleon"],
+c:2
+},
+
+{
+cat:"Culture",
+q:"Sushi originates from which country?",
+a:["China","Japan","Thailand","Korea"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is famous for tango dancing?",
+a:["Brazil","Argentina","Spain","Mexico"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"What is the traditional dress of Scotland?",
+a:["Kimono","Kilt","Sari","Poncho"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which festival is known as the Festival of Lights in India?",
+a:["Holi","Diwali","Navratri","Eid"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is famous for flamenco?",
+a:["Italy","Spain","Portugal","France"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Kimono is traditional clothing from which country?",
+a:["China","Japan","Vietnam","Korea"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"What language has the most native speakers worldwide?",
+a:["English","Spanish","Mandarin Chinese","Hindi"],
+c:2
+},
+
+{
+cat:"Culture",
+q:"Which country is known for Oktoberfest?",
+a:["Austria","Germany","Switzerland","Belgium"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is famous for the pyramids?",
+a:["Peru","Mexico","Egypt","India"],
+c:2
+},
+
+{
+cat:"Culture",
+q:"What is the traditional Japanese tea ceremony centered around?",
+a:["Coffee","Tea","Rice","Wine"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is famous for samba?",
+a:["Brazil","Argentina","Portugal","Spain"],
+c:0
+},
+
+{
+cat:"Culture",
+q:"Which city hosts the Carnival in Brazil?",
+a:["Rio de Janeiro","Brasília","São Paulo","Salvador"],
+c:0
+},
+
+{
+cat:"Culture",
+q:"What is Bollywood?",
+a:["Japanese cinema","Indian film industry","Chinese opera","French theatre"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is known for maple syrup?",
+a:["USA","Canada","Sweden","Norway"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country celebrates Bastille Day?",
+a:["France","Italy","Spain","Belgium"],
+c:0
+},
+
+{
+cat:"Culture",
+q:"What is the traditional greeting in New Zealand's Māori culture called?",
+a:["Haka","Hongi","Aloha","Bula"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is famous for tulips and windmills?",
+a:["Belgium","Netherlands","Denmark","Austria"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is associated with the Great Wall?",
+a:["China","Japan","India","Mongolia"],
+c:0
+},
+
+{
+cat:"Culture",
+q:"What is a mariachi band associated with?",
+a:["Spain","Mexico","Brazil","Chile"],
+c:1
+},
+
+{
+cat:"Culture",
+q:"Which country is famous for saunas?",
+a:["Sweden","Norway","Finland","Iceland"],
+c:2
+},
+
+{
+cat:"History",
+q:"Which empire built the Colosseum?",
+a:["Greek","Roman","Persian","Ottoman"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"How many players are on a soccer team on the field?",
+a:["9","10","11","12"],
+c:2
+},
+
+{
+cat:"Sports",
+q:"Which sport uses a racket and shuttlecock?",
+a:["Tennis","Badminton","Squash","Table Tennis"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"How many Olympic rings are there?",
+a:["4","5","6","7"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"Which country won the FIFA World Cup in 2022?",
+a:["France","Brazil","Argentina","Germany"],
+c:2
+},
+
+{
+cat:"Sports",
+q:"In which sport is Wimbledon famous?",
+a:["Golf","Football","Tennis","Cricket"],
+c:2
+},
+
+{
+cat:"Sports",
+q:"How many points is a touchdown worth in American football?",
+a:["3","6","7","9"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"Which sport is Michael Jordan famous for?",
+a:["Baseball","Basketball","Tennis","Golf"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"How many players are on a basketball team on the court?",
+a:["4","5","6","7"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"Which country hosts the Tour de France?",
+a:["Italy","France","Spain","Belgium"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"What sport is Cristiano Ronaldo famous for?",
+a:["Basketball","Football","Tennis","Rugby"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"How long is a marathon?",
+a:["21.1 km","42.2 km","50 km","100 km"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"Which sport uses a puck?",
+a:["Field Hockey","Ice Hockey","Lacrosse","Curling"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"Which country invented basketball?",
+a:["Canada","USA","England","Australia"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"What color card usually means a player is sent off in football?",
+a:["Blue","Yellow","Red","Green"],
+c:2
+},
+
+{
+cat:"Sports",
+q:"How many holes are played in a standard round of golf?",
+a:["9","12","18","24"],
+c:2
+},
+
+{
+cat:"Sports",
+q:"Which sport uses the term 'home run'?",
+a:["Baseball","Cricket","Rugby","Tennis"],
+c:0
+},
+
+{
+cat:"Sports",
+q:"Which country is famous for sumo wrestling?",
+a:["China","Japan","Korea","Thailand"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"In which sport would you perform a slam dunk?",
+a:["Volleyball","Basketball","Handball","Baseball"],
+c:1
+},
+
+{
+cat:"Sports",
+q:"What is the highest possible break in snooker?",
+a:["147","155","180","100"],
+c:0
+},
+
+{
+cat:"Sports",
+q:"Which sport is played at Augusta National?",
+a:["Tennis","Golf","Cricket","Rugby"],
+c:1
+},
+
+{
+cat:"Science",
+q:"What is the nearest star to Earth?",
+a:["Sirius","Polaris","The Sun","Alpha Centauri"],
+c:2
+}
+];
+
+let i=0,xp=0,timer;
+let playerName="";
+let gameQuestions=[];
+let selectedCategory="All";
+
+function start(){
+
+playerName =
+document.getElementById("name").value || "Anonymous";
+selectedCategory =
+document.getElementById("category").value;
+
+document.getElementById("start").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+
+let pool=q;
+
+if(selectedCategory!=="All"){
+pool=q.filter(
+question=>question.cat===selectedCategory
+);
+}
+
+pool.sort(() => Math.random() - 0.5);
+
+gameQuestions=pool.slice(0,20);
+
+load();
+}
+
+function load(){
+clearInterval(timer);
+let time=15;
+document.getElementById("time").innerText=time;
+
+timer=setInterval(()=>{
+time--;
+document.getElementById("time").innerText=time;
+if(time<=0){next();}
+},1000);
+
+let cur = gameQuestions[i];
+
+document.getElementById("question").innerHTML = `
+<div style="font-size:14px;color:#22c55e;margin-bottom:8px">
+${cur.cat}
+</div>
+${cur.q}
+`;
+
+let box=document.getElementById("answers");
+box.innerHTML="";
+
+cur.a.forEach((x,idx)=>{
+let b=document.createElement("button");
+b.innerText=x;
+b.onclick=()=>check(idx);
+box.appendChild(b);
+});
+
+document.getElementById("progress").style.width=((i+1)/gameQuestions.length)*100+"%";}
+
+function check(idx){
+clearInterval(timer);
+let buttons=document.querySelectorAll(".answers button");
+
+buttons.forEach(b=>b.disabled=true);
+
+if(idx===gameQuestions[i].c){document.getElementById("correct").play();
+buttons[idx].classList.add("correct");
+xp+=10;
+document.getElementById("xp").innerText=xp;
+}else{
+document.getElementById("wrong").play();
+buttons[idx].classList.add("wrong");
+buttons[gameQuestions[i].c].classList.add("correct");}
+
+setTimeout(next,800);
+}
+
+function next(){
+i++;
+if(i>=gameQuestions.length)finish();else load();
+}
+
+function finish(){
+
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+
+let rank="Beginner";
+let badge="Recruit";
+
+if(xp>=30){rank="Supporter";badge="🔥 Supporter";}
+if(xp>=60){rank="Warrior";badge="⚔️ Warrior";}
+if(xp>=90){rank="Legend";badge="👑 Legend";}
+
+document.getElementById("finalXp").innerText=xp;
+document.getElementById("finalRank").innerText=rank;
+document.getElementById("badge").innerText=badge;
+
+save(rank);
+}
+
+function save(rank){
+let board=JSON.parse(localStorage.getItem("mgot"))||[];
+board.push({
+name:playerName,
+xp:xp,
+rank:rank
+});
+board.sort((a,b)=>b.xp-a.xp);
+localStorage.setItem("mgot",JSON.stringify(board));
+render();
+}
+
+function clearBoard(){
+localStorage.removeItem("mgot");
+render();
+}
+
+function render(){
+    let board = JSON.parse(localStorage.getItem("mgot")) || [];
+
+    let list = document.getElementById("board");
+
+    list.innerHTML = "";
+
+    board.slice(0,10).forEach(p => {
+
+        list.innerHTML += `
+        <li>${p.name} - ${p.xp} XP (${p.rank})</li>
+        `;
+
+    });
+}
+
+function restart(){
+
+i = 0;
+xp = 0;
+
+clearInterval(timer);
+
+document.getElementById("xp").innerText = 0;
+
+document.getElementById("result").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+
+let pool = q;
+
+if(selectedCategory !== "All"){
+    pool = q.filter(
+        question => question.cat === selectedCategory
+    );
+}
+
+pool.sort(() => Math.random() - 0.5);
+
+gameQuestions = pool.slice(0,20);
+
+load();
+}
+
+render();
+
+</script>
+
+</body>
+</html>
