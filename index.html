@@ -303,6 +303,21 @@ color:white;
 font-size:18px;
 cursor:pointer;
 }
+#modalContent{
+display:block;
+width:100%;
+}
+
+#modalContent p{
+margin-bottom:10px;
+line-height:1.7;
+color:#cbd5e1;
+}
+
+#modalContent h3{
+font-size:20px;
+font-weight:700;
+}  
   
 </style>
 </head>
@@ -2530,52 +2545,126 @@ load();
 }
 function showAbout(){
 
-document.getElementById("modalTitle").innerHTML = "ABOUT MGOT";
+document.getElementById("modalTitle").innerHTML =
+"ABOUT MGOT";
 
 document.getElementById("modalContent").innerHTML = `
 
+<div style="display:grid;gap:18px;">
+
 <div style="
-padding:15px;
 background:#111827;
-border-left:4px solid #22c55e;
-border-radius:12px;
-margin-bottom:20px;
+padding:20px;
+border-radius:16px;
+border:1px solid rgba(34,197,94,.25);
 ">
-<b>MGOT Vision</b><br>
-Better decisions lead to better outcomes — for individuals,
-communities and future generations.
+<h3 style="color:#22c55e;margin-bottom:12px">
+🎯 Vision
+</h3>
+
+<p>
+MGOT believes that better decisions create better outcomes.
+</p>
+
+<p>
+The project focuses on developing knowledge, critical thinking,
+discipline and long-term personal growth.
+</p>
+
+<p>
+Our mission is to build a community where education and
+self-improvement become valuable assets.
+</p>
 </div>
 
-<h3 style="color:#22c55e;margin-bottom:10px">🎯 Strategic Vision</h3>
+
+<div style="
+background:#111827;
+padding:20px;
+border-radius:16px;
+border:1px solid rgba(59,130,246,.25);
+">
+<h3 style="color:#3b82f6;margin-bottom:12px">
+🪙 Tokenomics
+</h3>
+
+<p>✔ Fair Launch</p>
+<p>✔ Community Driven</p>
+<p>✔ Long-Term Vision</p>
+<p>✔ Transparent Development</p>
+<p>✔ Sustainable Ecosystem Growth</p>
+
+</div>
+
+
+<div style="
+background:#111827;
+padding:20px;
+border-radius:16px;
+border:1px solid rgba(168,85,247,.25);
+">
+<h3 style="color:#a855f7;margin-bottom:12px">
+⚙ Utilities
+</h3>
+
+<p>📚 Knowledge Quizzes</p>
+<p>🧠 Mindset Development</p>
+<p>🎙 Community Education Calls</p>
+<p>🌐 Learning Resources</p>
+<p>🏆 Achievement & XP Systems</p>
+
+</div>
+
+
+<div style="
+background:#111827;
+padding:20px;
+border-radius:16px;
+border:1px solid rgba(245,158,11,.25);
+">
+<h3 style="color:#f59e0b;margin-bottom:12px">
+🗺 Roadmap
+</h3>
 
 <p>
-MGOT is founded on the belief that long-term societal progress begins with individual development.
+<b>Phase 1</b><br>
+Community Building & Awareness
 </p>
 
 <p>
-Our objective is to build an ecosystem that promotes education, critical thinking, personal responsibility and continuous growth.
-</p>
-
-<hr style="margin:20px 0;border-color:#1e293b">
-
-<h3 style="color:#22c55e;margin-bottom:10px">🌐 About MGOT</h3>
-
-<p>
-Community-driven Web3 ecosystem focused on long-term growth, transparency and education.
+<b>Phase 2</b><br>
+Educational Platform Expansion
 </p>
 
 <p>
-The project aims to create a sustainable environment where holders, builders and contributors can grow together.
+<b>Phase 3</b><br>
+Gamified Learning Systems
 </p>
 
-<hr style="margin:20px 0;border-color:#1e293b">
+<p>
+<b>Phase 4</b><br>
+Ecosystem Growth & Partnerships
+</p>
 
-<h3 style="color:#22c55e;margin-bottom:10px">📚 Education & Growth</h3>
+</div>
 
-<p>🧠 Mindset Training</p>
-<p>📖 Web3 Learning Hub</p>
-<p>🎙 Community Learning Calls</p>
 
+<div style="
+background:linear-gradient(135deg,#14532d,#166534);
+padding:20px;
+border-radius:16px;
+text-align:center;
+">
+<h3 style="margin-bottom:10px">
+🚀 MGOT Philosophy
+</h3>
+
+<p>
+Knowledge → Discipline → Better Decisions → Better Future
+</p>
+</div>
+
+</div>
 `;
 
 document.getElementById("modal").classList.remove("hidden");
