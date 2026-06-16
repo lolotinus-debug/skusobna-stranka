@@ -242,6 +242,9 @@ color:white;
 <h2>Quiz Finished 🎉</h2>
 <p>Total XP: <span id="finalXp"></span></p>
 <p>Rank: <span id="finalRank"></span></p>
+<p>Correct: <span id="correctCount"></span></p>
+<p>Wrong: <span id="wrongCount"></span></p>
+<p>Accuracy: <span id="accuracy"></span>%</p>
 <div id="badge" class="badge"></div>
 <button onclick="restart()">Play Again</button>
 </div>
@@ -2201,7 +2204,11 @@ c:2
 }
 ];
 
-let i=0,xp=0,timer;
+let i=0,
+xp=0,
+correctAnswers=0,
+wrongAnswers=0,
+timer;
 let playerName="";
 let gameQuestions=[];
 let selectedCategory="All";
@@ -2272,12 +2279,14 @@ buttons.forEach(b=>b.disabled=true);
 if(idx===gameQuestions[i].c){document.getElementById("correct").play();
 buttons[idx].classList.add("correct");
 xp+=10;
+correctAnswers++;
 document.getElementById("xp").innerText=xp;
 }else{
 document.getElementById("wrong").play();
 buttons[idx].classList.add("wrong");
 buttons[gameQuestions[i].c].classList.add("correct");}
-
+wrongAnswers++;
+  
 setTimeout(next,800);
 }
 
@@ -2300,6 +2309,19 @@ if(xp>=90){rank="Legend";badge="👑 Legend";}
 
 document.getElementById("finalXp").innerText=xp;
 document.getElementById("finalRank").innerText=rank;
+let accuracy =
+Math.round(
+(correctAnswers / gameQuestions.length) * 100
+);
+
+document.getElementById("correctCount").innerText =
+correctAnswers;
+
+document.getElementById("wrongCount").innerText =
+wrongAnswers;
+
+document.getElementById("accuracy").innerText =
+accuracy;
 document.getElementById("badge").innerText=badge;
 
 save(rank);
@@ -2342,6 +2364,8 @@ function restart(){
 
 i = 0;
 xp = 0;
+correctAnswers = 0;
+wrongAnswers = 0;
 
 clearInterval(timer);
 
