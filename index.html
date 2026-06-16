@@ -340,6 +340,43 @@ font-size:20px;
 font-weight:700;
 }  
 
+.level-box{
+margin-bottom:20px;
+}
+
+.level-info{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-size:14px;
+font-weight:700;
+color:#cbd5e1;
+}
+
+.level-bar{
+height:14px;
+background:#0f172a;
+border-radius:999px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.08);
+}
+
+#levelProgress{
+height:100%;
+width:0%;
+background:linear-gradient(
+90deg,
+#22c55e,
+#3b82f6,
+#a855f7
+);
+border-radius:999px;
+transition:.4s;
+box-shadow:
+0 0 15px rgba(34,197,94,.5),
+0 0 25px rgba(59,130,246,.5);
+}  
+
 @keyframes glowPulse{
 
 0%{
@@ -448,7 +485,16 @@ animation: glowPulse 3s infinite;
       <div>Rank: <span id="rank">Beginner</span></div>
       <div>Time: <span id="time">15</span></div>
     </div>
+<div class="level-box">
+  <div class="level-info">
+    <span>LEVEL <span id="level">1</span></span>
+    <span id="nextRank">Next Rank: Learner</span>
+  </div>
 
+  <div class="level-bar">
+    <div id="levelProgress"></div>
+  </div>
+</div>
     <div class="bar"><div id="progress"></div></div>
 
     <h2 id="question"></h2>
@@ -6526,9 +6572,33 @@ pool.sort(() => Math.random() - 0.5);
 
 gameQuestions=pool.slice(0,20);
 
+updateLevel();
+  
 load();
 }
 
+function updateLevel(){
+
+let level = Math.floor(xp / 100) + 1;
+
+document.getElementById("level").innerText = level;
+
+let currentXP = xp % 100;
+
+document.getElementById("levelProgress").style.width =
+currentXP + "%";
+
+let nextRank = "Learner";
+
+if(level >= 5) nextRank = "Builder";
+if(level >= 10) nextRank = "Visionary";
+if(level >= 20) nextRank = "Master";
+if(level >= 30) nextRank = "Legend";
+
+document.getElementById("nextRank").innerText =
+"Next Rank: " + nextRank;
+}
+  
 function load(){
 clearInterval(timer);
 let time=15;
@@ -6569,9 +6639,13 @@ buttons.forEach(b=>b.disabled=true);
 
 if(idx===gameQuestions[i].c){document.getElementById("correct").play();
 buttons[idx].classList.add("correct");
-xp+=10;
+xp += 10;
+
+document.getElementById("xp").innerText = xp;
+
+updateLevel();
+
 correctAnswers++;
-document.getElementById("xp").innerText=xp;
 }else{
 document.getElementById("wrong").play();
 buttons[idx].classList.add("wrong");
@@ -6656,6 +6730,7 @@ function restart(){
 
 i = 0;
 xp = 0;
+updateLevel();
 correctAnswers = 0;
 wrongAnswers = 0;
 
