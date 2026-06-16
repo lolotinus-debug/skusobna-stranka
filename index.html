@@ -267,128 +267,106 @@ cursor:pointer;
 
 <!-- MODAL -->
 <div id="modal" class="modal hidden">
-
-<div class="modal-box">
-
-<button class="close-btn" onclick="closeModal()">✕</button>
-
-<h2 id="modalTitle"></h2>
-
-<div id="modalContent"></div>
-
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal()">✕</button>
+    <h2 id="modalTitle"></h2>
+    <div id="modalContent"></div>
+  </div>
 </div>
 
-</div>  
-
-<div id="topMenu">
-<a href="#" onclick="showAbout()">ABOUT MGOT</a>
-<a href="#" onclick="showLinks()">LINKS</a>
-</div>  
+<!-- TOP MENU -->
+<nav id="topMenu">
+  <a href="#" onclick="showAbout()">ABOUT MGOT</a>
+  <a href="#" onclick="showLinks()">LINKS</a>
+</nav>
 
 <div class="background-glow"></div>
 
+<!-- HEADER SECTION -->
 <header>
+  <div style="text-align:center; margin-bottom:10px;">
+    <img src="logo.png" alt="MGOT Logo" style="width:140px; filter: drop-shadow(0 0 15px #22c55e); animation: glowPulse 2s infinite;">
+  </div>
 
-<div style="text-align:center; margin-bottom:10px;">
-<img src="logo.png" alt="MGOT Logo"
-style="
-width:140px;
-height:auto;
-filter: drop-shadow(0 0 15px #22c55e);
-animation: glowPulse 2s infinite;
-">
-</div>
-
-<h1>MGOT KNOWLEDGE QUIZ</h1>
-<p>Test your mindset. Earn XP. Become Legend.</p>
-
+  <h1>MGOT KNOWLEDGE QUIZ</h1>
+  <p>Test your mindset. Earn XP. Become Legend.</p>
 </header>
 
-<!-- START -->
-<div id="start" class="card">
-<h2>Enter your name</h2>
-<input id="name" placeholder="Your name">
-<select id="category"
-style="
-width:100%;
-padding:12px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-background:#0f172a;
-color:white;
-">
+<main>
 
-<option value="All">All Categories</option>
-<option value="MGOT">MGOT</option>
-<option value="Science">Science</option>
-<option value="Geography">Geography</option>
-<option value="Technology">Technology</option>
-<option value="Psychology">Psychology</option>
-<option value="Health">Health</option>
-<option value="Food">Food</option>
-<option value="Art">Art</option>
-<option value="Culture">Culture</option>
-<option value="History">History</option>
-<option value="Sports">Sports</option>
-<option value="Space">Space</option>
-<option value="Finance">Finance</option>
+  <!-- START SECTION -->
+  <section id="start" class="card">
+    <h2>Enter your name</h2>
 
-</select>
-<button onclick="start()">Start Quiz</button>
-</div>
+    <input id="name" placeholder="Your name">
 
-<!-- QUIZ -->
-<div id="quiz" class="card hidden">
+    <select id="category">
+      <option value="All">All Categories</option>
+      <option value="MGOT">MGOT</option>
+      <option value="Science">Science</option>
+      <option value="Geography">Geography</option>
+      <option value="Technology">Technology</option>
+      <option value="Psychology">Psychology</option>
+      <option value="Health">Health</option>
+      <option value="Food">Food</option>
+      <option value="Art">Art</option>
+      <option value="Culture">Culture</option>
+      <option value="History">History</option>
+      <option value="Sports">Sports</option>
+      <option value="Space">Space</option>
+      <option value="Finance">Finance</option>
+    </select>
 
-<div class="top">
-<div>XP: <span id="xp">0</span></div>
-<div>Rank: <span id="rank">Beginner</span></div>
-<div>Time: <span id="time">15</span></div>
-</div>
+    <button onclick="start()">Start Quiz</button>
+  </section>
 
-<div class="bar"><div id="progress"></div></div>
+  <!-- QUIZ SECTION -->
+  <section id="quiz" class="card hidden">
 
-<h2 id="question"></h2>
+    <div class="top">
+      <div>XP: <span id="xp">0</span></div>
+      <div>Rank: <span id="rank">Beginner</span></div>
+      <div>Time: <span id="time">15</span></div>
+    </div>
 
-<div class="answers" id="answers"></div>
-</div>
+    <div class="bar"><div id="progress"></div></div>
 
-<!-- RESULT -->
-<div id="result" class="card hidden">
-<h2>Quiz Finished 🎉</h2>
-<p>Total XP: <span id="finalXp"></span></p>
-<p>Rank: <span id="finalRank"></span></p>
-<p>Correct: <span id="correctCount"></span></p>
-<p>Wrong: <span id="wrongCount"></span></p>
-<p>Accuracy: <span id="accuracy"></span>%</p>
-<div id="badge" class="badge"></div>
-<button onclick="restart()">Play Again</button>
-</div>
+    <h2 id="question"></h2>
+    <div class="answers" id="answers"></div>
+  </section>
 
-<!-- LEADERBOARD -->
-<div class="card">
-<h2>🏆 Leaderboard</h2>
+  <!-- RESULT SECTION -->
+  <section id="result" class="card hidden">
+    <h2>Quiz Finished 🎉</h2>
 
-<button onclick="clearBoard()" style="
-padding:10px 15px;
-margin-bottom:10px;
-border-radius:10px;
-background:#dc2626;
-color:white;
-border:none;
-cursor:pointer;
-font-weight:700;
-">
-Reset Leaderboard
-</button>
+    <p>Total XP: <span id="finalXp"></span></p>
+    <p>Rank: <span id="finalRank"></span></p>
+    <p>Correct: <span id="correctCount"></span></p>
+    <p>Wrong: <span id="wrongCount"></span></p>
+    <p>Accuracy: <span id="accuracy"></span>%</p>
 
-<ul id="board"></ul>
-</div>
+    <div id="badge" class="badge"></div>
+
+    <button onclick="restart()">Play Again</button>
+  </section>
+
+  <!-- LEADERBOARD SECTION -->
+  <section class="card">
+    <h2>🏆 Leaderboard</h2>
+
+    <button onclick="clearBoard()" style="padding:10px 15px;margin-bottom:10px;border-radius:10px;background:#dc2626;color:white;">
+      Reset Leaderboard
+    </button>
+
+    <ul id="board"></ul>
+  </section>
+
+</main>
 
 <audio id="correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
 <audio id="wrong" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
 
+</body>
 <script>
 
 
